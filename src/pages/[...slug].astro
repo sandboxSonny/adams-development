@@ -16,7 +16,8 @@ const isPreview = Boolean(page.headers["Cache-Control"]);
 
 {page.kind === "entry" ? (
   <Layout
-    title={`${page.entry.title} | Adams Development`}
+    entry={page.entry}
+    title={page.entry.title}
     description={page.entry.description || undefined}
     preview={isPreview}
   >
