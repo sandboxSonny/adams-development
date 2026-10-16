@@ -1,10 +1,11 @@
 export const prerender = false;
 
+import { RESEND_API_KEY } from "astro:env/server";
 import { contactSchema } from "../../lib/schema/contact.validation";
 import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ request }) => {
-  const key = import.meta.env.RESEND_API_KEY;
+  const key = RESEND_API_KEY;
   try {
     if (!key) {
       console.error("Missing RESEND_API_KEY");
