@@ -1,0 +1,44 @@
+---
+import type { SectionOf } from "@sandboxsonny/ace-kit";
+import Step from "../snippets/Step.astro";
+import type steps from "./Steps.schema";
+
+type Props = {
+  section: SectionOf<typeof steps>;
+};
+
+const { section } = Astro.props;
+---
+
+<section aria-label="Steps" class="steps">
+  <div class="steps__wrapper">
+    <div class="steps__grid">
+      {section.blocks.map((step) => {
+        const stepData = step.values;
+        return <Step data={stepData} />;
+      })}
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use "../../styles/mixins.scss" as mixin;
+
+  .steps {
+    padding: 7rem 0;
+
+    &__wrapper {
+      @include mixin.page-width;
+    }
+
+    &__grid {
+      @include mixin.grid(1, flex-start, 2rem);
+    }
+
+    @media screen and (width >= 768px) {
+      &__grid {
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+    }
+  }
+</style>

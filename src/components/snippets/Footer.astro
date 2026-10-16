@@ -1,0 +1,39 @@
+---
+import { getMenuLinks } from "@sandboxsonny/ace-kit/astro";
+const links = await getMenuLinks("footer-menu");
+---
+
+<footer class="footer">
+  <div class="footer__wrapper">
+    <nav class="footer__nav">
+      {links.map((link) => {
+        return (
+          <a class="footer__link" href={link.to}>
+            {link.label}
+          </a>
+        );
+      })}
+    </nav>
+  </div>
+</footer>
+
+<style lang="scss">
+  @use "../../styles/variables";
+  @use "../../styles/mixins" as mixin;
+
+  .footer {
+    padding: 2rem 0;
+
+    &__wrapper {
+      @include mixin.page-width;
+    }
+
+    &__nav {
+      @include mixin.flex(row, center, center, 2rem);
+    }
+
+    &__link {
+      color: #000;
+    }
+  }
+</style>

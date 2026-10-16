@@ -1,0 +1,64 @@
+---
+import type { SectionOf } from "@sandboxsonny/ace-kit";
+import type imageWithText from "./ImageWithText.schema";
+import AceLink from "@sandboxsonny/ace-kit/astro/AceLink.astro";
+import AceImage from "@sandboxsonny/ace-kit/astro/AceImage.astro";
+
+type Props = {
+  section: SectionOf<typeof imageWithText>;
+};
+
+const { section } = Astro.props;
+const { title, content, button, image, invert, reverse } = section.values;
+---
+
+<section aria-label={title} class:list={["image-with-text", { "image-with-text--invert": invert }]}>
+  <div class="image-with-text__wrapper">
+    <div class:list={["image-with-text__grid", { "image-with-text__grid--reverse": reverse }]}>
+      <div class="image-with-text__image">
+        {image && <AceImage image={image} sizes="(min-width: 64rem) 32rem, 100vw" lazy={false} />}
+      </div>
+      <div class="image-with-text__content">
+        {title && <h2>{title}</h2>}
+        <p>{content}</p>
+        {button && <AceLink class="button" link={button} />}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use "../../styles/variables";
+  @use "../../styles/mixins.scss" as mixin;
+
+  .image-with-text {
+    padding: 7rem 0;
+
+    &--invert {
+      color: variables.$color-text-light;
+      background-color: variables.$color-background-dark;
+    }
+
+    &__wrapper {
+      @include mixin.page-width;
+    }
+
+    &__grid {
+      @include mixin.grid(1, center, 2rem);
+    }
+
+    &__content {
+      @include mixin.flex(column, flex-start, flex-start, 1.4rem);
+    }
+
+    @media screen and (width >= 768px) {
+      &__grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      &__grid--reverse .image-with-text__content {
+        order: -1;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,19 @@
+---
+const { href, style = 'primary' } = Astro.props;
+const buttonClass = 'link--' + style;
+---
+
+<a class:list={['link', buttonClass]} href={href}><slot /></a>
+
+<style lang="scss">
+  @use 'sass:color';
+  @use '../styles/variables';
+
+  .link--primary {
+    color: variables.$color-text;
+  }
+
+  .link--primary:hover {
+    color: color.adjust(variables.$color-text, $lightness: -5%);
+  }
+</style>

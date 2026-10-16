@@ -1,0 +1,22 @@
+---
+const { data } = Astro.props;
+---
+
+<div class="step">
+  <span class="step__title">{data.number}.</span>
+  <h3>{data.title}</h3>
+  <p>{data.description}</p>
+</div>
+
+<style lang="scss">
+  @use "../../styles/mixins.scss" as mixin;
+
+  .step {
+    @include mixin.flex(column, flex-start, flex-start, 1.4rem);
+
+    &__title {
+      display: block;
+      font-size: 2.4rem;
+    }
+  }
+</style>

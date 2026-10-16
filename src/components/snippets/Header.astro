@@ -1,0 +1,247 @@
+---
+import LogoSVG from "../../assets/icons/logo.svg";
+import BarSVG from "../../assets/icons/bars.svg";
+import { getMenuLinks } from "@sandboxsonny/ace-kit/astro";
+const links = await getMenuLinks("main-menu");
+---
+
+<header id="site-header" class="header">
+  <div class="header__wrapper">
+    <div class="header__grid">
+      <a class="header__logo" href="/" aria-label="Adams Development Homepage">
+        <LogoSVG class="header__logo-icon" />
+        <span class="header__logo-text">Adams Development</span>
+      </a>
+
+      <button
+        class="header__bars"
+        id="menu-toggle"
+        aria-label="Toggle navigation"
+        aria-expanded="false"
+        aria-controls="site-nav"
+      >
+        <BarSVG class="header__bars-icon" />
+      </button>
+
+      <nav id="site-nav" class="header__nav">
+        {links.map((link) => {
+          return (
+            <a class="header__nav-link" href={link.to}>
+              {link.label}
+            </a>
+          );
+        })}
+      </nav>
+    </div>
+  </div>
+
+  <div class="header__mobile-background"></div>
+  <div id="menu-overlay" class="header__mobile-overlay"></div>
+</header>
+
+<script is:inline>
+  const startHeader = () => {
+    const { animate } = window.motion;
+
+    const barToggle = document.querySelector("#menu-toggle");
+    const siteHeader = document.querySelector("#site-header");
+    const menuOverlay = document.querySelector("#menu-overlay");
+    const mobileBackground = document.querySelector(".header__mobile-background");
+    const navLinks = document.querySelectorAll(".header__nav-link");
+
+    if (!barToggle || !siteHeader || !menuOverlay || !mobileBackground) return;
+
+    // Set the initial position fully off top
+    const bgHeight = mobileBackground.offsetHeight;
+
+    let menuOpen = false;
+
+    const toggleMenu = () => {
+      menuOpen = !menuOpen;
+      document.body.classList.toggle("overflow-hidden", menuOpen);
+      barToggle.setAttribute("aria-expanded", String(menuOpen));
+
+      if (menuOpen) {
+        // Slide background in from top
+        animate(mobileBackground, { y: [-bgHeight, 0] }, { duration: 0.6, easing: "easeInOut" });
+
+        // Overlay fade in
+        menuOverlay.style.pointerEvents = "auto";
+        animate(
+          menuOverlay,
+          { opacity: [0, 0.7] },
+          {
+            duration: 0.6,
+            easing: "easeInOut",
+          },
+        );
+
+        // Nav links fade/slide in with stagger
+        navLinks.forEach((link, i) => {
+          animate(
+            link,
+            { opacity: [0, 1], y: [-20, 0] },
+            {
+              duration: 0.5,
+              delay: 0.1 * i + 0.1,
+              easing: "easeOut",
+            },
+          );
+        });
+      } else {
+        // Nav links out
+        navLinks.forEach((link, i) => {
+          animate(
+            link,
+            { opacity: [1, 0], y: [0, -20] },
+            {
+              duration: 0.4,
+              delay: 0.05 * i,
+              easing: "easeIn",
+            },
+          );
+        });
+
+        // Overlay fade out
+        menuOverlay.style.pointerEvents = "none";
+        animate(
+          menuOverlay,
+          { opacity: [0.7, 0] },
+          {
+            duration: 0.6,
+            easing: "easeInOut",
+          },
+        );
+
+        // Slide background back up
+        animate(mobileBackground, { y: [0, -bgHeight] }, { duration: 0.6, easing: "easeInOut" });
+      }
+    };
+
+    barToggle.addEventListener("click", toggleMenu);
+    menuOverlay.addEventListener("click", toggleMenu);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && menuOpen) toggleMenu();
+    });
+  };
+
+  document.addEventListener("astro:page-load", startHeader);
+</script>
+
+<style lang="scss">
+  @use "../../styles/variables.scss";
+  @use "../../styles/mixins.scss" as mixin;
+
+  .header {
+    position: relative;
+    padding: 2rem 0;
+    color: variables.$color-text-light;
+    background-color: variables.$color-background-dark;
+
+    &__wrapper {
+      @include mixin.page-width;
+    }
+
+    &__grid {
+      @include mixin.flex(row, space-between, center, 2rem);
+
+      position: relative;
+      z-index: calc(variables.$z-index-modal + 1);
+    }
+
+    &__logo {
+      @include mixin.flex(row, center, center, 2rem);
+
+      font-size: 2rem;
+      color: variables.$color-text-light;
+      text-decoration: none;
+
+      &-icon {
+        width: 40px;
+      }
+
+      &-text {
+        display: none;
+      }
+    }
+
+    &__nav {
+      @include mixin.flex(column, center, flex-start, 1rem);
+
+      position: absolute;
+      top: 100%;
+      z-index: calc(variables.$z-index-modal + 1);
+      padding: 3.2rem 0;
+    }
+
+    &__nav-link {
+      color: variables.$color-text-light;
+      text-decoration: none;
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+
+    &__bars {
+      color: variables.$color-text-light;
+      appearance: none;
+      background-color: transparent;
+      border: none;
+
+      &-icon {
+        width: 2.8rem;
+        fill: variables.$color-text-light;
+      }
+    }
+
+    &__mobile-background {
+      position: fixed;
+      top: 0;
+      left: -50%;
+      z-index: variables.$z-index-modal;
+      width: 200%;
+      height: 300px;
+      background-color: variables.$color-primary;
+      border-bottom-right-radius: 100%;
+      border-bottom-left-radius: 100%;
+      transform: translateY(-100%);
+      transform-origin: 50% 0;
+    }
+
+    &__mobile-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: variables.$z-index-overlay;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      background-color: #334155;
+      opacity: 0;
+    }
+
+    @media screen and (width >= 768px) {
+      &__logo-text {
+        display: block;
+      }
+
+      &__nav {
+        position: static;
+        flex: 1;
+        flex-direction: row;
+        gap: 4rem;
+        justify-content: flex-end;
+        padding: 0;
+      }
+
+      &__nav-link {
+        opacity: 1;
+        transform: none;
+      }
+
+      &__bars {
+        display: none;
+      }
+    }
+  }
+</style>

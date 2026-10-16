@@ -1,0 +1,145 @@
+---
+import type { SectionOf } from "@sandboxsonny/ace-kit";
+import type hero from "./Hero.schema";
+
+type Props = {
+  section: SectionOf<typeof hero>;
+};
+
+const { section } = Astro.props;
+const { heading } = section.values;
+---
+
+<section aria-label={`${heading} Hero`} class="hero">
+  <div class="hero__wrapper">
+    <h1>{heading}</h1>
+  </div>
+
+  <!-- Hero orbs -->
+  <div class="hero__circle hero__circle--one"></div>
+  <div class="hero__circle hero__circle--two"></div>
+</section>
+
+<script is:inline>
+  const positionOrbs = () => {
+    const { animate } = window.motion;
+    const hero = document.querySelector(".hero");
+    if (!hero) return;
+
+    const orbOne = document.querySelector(".hero__circle--one");
+    const orbTwo = document.querySelector(".hero__circle--two");
+    if (!orbOne || !orbTwo) return;
+
+    const maxX = hero.clientWidth - orbOne.offsetWidth;
+    const maxY = hero.clientHeight - orbOne.offsetHeight;
+
+    const baseX1 = Math.random() * maxX;
+    const baseY1 = Math.random() * maxY;
+    const baseX2 = Math.random() * maxX;
+    const baseY2 = Math.random() * maxY;
+
+    orbOne.style.left = `${baseX1}px`;
+    orbOne.style.top = `${baseY1}px`;
+
+    orbTwo.style.left = `${baseX2}px`;
+    orbTwo.style.top = `${baseY2}px`;
+
+    orbOne.style.opacity = "1";
+    orbTwo.style.opacity = "1";
+
+    const random = (min, max) => Math.random() * (max - min) + min;
+
+    const floatOrb = (orb) => {
+      const radius = 10;
+
+      const generateKeyframes = () => {
+        const points = 8;
+        const xKeyframes = [];
+        const yKeyframes = [];
+
+        for (let i = 0; i < points; i++) {
+          xKeyframes.push((Math.random() - 0.5) * radius * 2);
+          yKeyframes.push((Math.random() - 0.5) * radius * 2);
+        }
+
+        xKeyframes.push(xKeyframes[0]);
+        yKeyframes.push(yKeyframes[0]);
+
+        return { xKeyframes, yKeyframes };
+      };
+
+      const { xKeyframes, yKeyframes } = generateKeyframes();
+
+      animate(
+        orb,
+        { x: xKeyframes },
+        {
+          duration: random(12, 16),
+          easing: "ease-in-out",
+          repeat: Infinity,
+        },
+      );
+
+      animate(
+        orb,
+        { y: yKeyframes },
+        {
+          duration: random(14, 18),
+          easing: "ease-in-out",
+          repeat: Infinity,
+        },
+      );
+    };
+
+    floatOrb(orbOne);
+    floatOrb(orbTwo);
+  };
+
+  document.addEventListener("astro:page-load", positionOrbs);
+</script>
+
+<style lang="scss">
+  @use "../../styles/variables";
+  @use "../../styles/mixins.scss" as mixin;
+
+  .hero {
+    position: relative;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    padding: 24rem 0;
+    overflow: hidden;
+    color: variables.$color-text-light;
+    background-color: variables.$color-background-dark;
+
+    &__wrapper {
+      @include mixin.page-width;
+
+      position: relative;
+      z-index: 160;
+      width: 100%;
+    }
+
+    &__circle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 150;
+      width: 30rem;
+      height: 30rem;
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    &__circle--one {
+      background-color: variables.$color-primary;
+    }
+
+    &__circle--two {
+      background-color: variables.$color-secondary;
+    }
+  }
+</style>

@@ -1,0 +1,54 @@
+---
+import { getMenuLinks } from "@sandboxsonny/ace-kit/astro";
+const links = await getMenuLinks("main-menu");
+---
+
+<section aria-label="404" class="four-oh-four">
+  <div class="four-oh-four__wrapper">
+    <div class="four-oh-four__content">
+      <h1>404</h1>
+      <p>Page not found here are some links to help you on your way:</p>
+      <div class="four-oh-four__actions">
+        {links.map((link) => {
+          return (
+            <a class="button" href={link.to}>
+              {link.label}
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use "../styles/mixins.scss" as mixin;
+
+  .four-oh-four {
+    @include mixin.flex(column, center, center, 2rem);
+
+    width: 100%;
+    min-height: 80svh;
+
+    &__wrapper {
+      @include mixin.page-width;
+    }
+
+    &__content {
+      @include mixin.grid(1, center, 1.6rem);
+
+      width: 100%;
+      max-width: 40rem;
+      text-align: center;
+    }
+
+    &__content > * {
+      margin: 0;
+    }
+
+    &__form {
+      display: grid;
+      gap: 1.2rem;
+    }
+  }
+</style>

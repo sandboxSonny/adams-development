@@ -1,0 +1,34 @@
+---
+import type { SectionOf } from "@sandboxsonny/ace-kit";
+import type contentSection from "./ContentSection.schema";
+import AceRichText from "@sandboxsonny/ace-kit/astro/AceRichText.astro";
+
+type Props = {
+  section: SectionOf<typeof contentSection>;
+};
+
+const { section } = Astro.props;
+const { invert, content } = section.values;
+---
+
+<section class:list={["content", { "content--invert": invert }]}>
+  <div class="content__wrapper">{content && <AceRichText document={content} />}</div>
+</section>
+
+<style lang="scss">
+  @use "../../styles/variables";
+  @use "../../styles/mixins.scss" as mixin;
+
+  .content {
+    padding: 7rem 0;
+
+    &--invert {
+      color: variables.$color-text-light;
+      background-color: variables.$color-background-dark;
+    }
+
+    &__wrapper {
+      @include mixin.page-width;
+    }
+  }
+</style>

@@ -1,0 +1,22 @@
+@use './variables.scss';
+
+@mixin page-width {
+  max-width: variables.$page-width;
+  padding: 0 2rem;
+  margin: 0 auto;
+}
+
+@mixin grid($columns, $align: center, $gap) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  align-items: $align;
+  gap: $gap;
+}
+
+@mixin flex($direction, $justify, $align, $gap: 0) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+  gap: $gap;
+}

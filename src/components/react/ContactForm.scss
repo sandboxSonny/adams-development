@@ -1,0 +1,56 @@
+@use 'sass:color';
+@use '../../styles/variables.scss' as variables;
+@use '../../styles/mixins.scss' as mixin;
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+
+  &__title {
+    font-size: 2.8rem;
+  }
+
+  &__input,
+  &__textarea {
+    padding: 1.2rem;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid variables.$color-border;
+
+    &:focus {
+      outline: none;
+      border-bottom: 1px solid variables.$color-primary;
+    }
+  }
+
+  &__textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 2rem;
+  }
+
+  &__error {
+    color: variables.$color-danger;
+  }
+
+  &__submit {
+    padding: 0.8rem 1.6rem;
+    font-size: 1.6rem;
+    color: variables.$color-text-light;
+    appearance: none;
+    background-color: variables.$color-primary;
+    border: none;
+    border-radius: 0.8rem;
+
+    &:hover {
+      background-color: color.adjust(variables.$color-primary, $lightness: -5%);
+    }
+  }
+}

@@ -1,0 +1,44 @@
+---
+import { Font } from "astro:assets";
+import "@/styles/global.scss";
+import { ClientRouter } from "astro:transitions";
+import Header from "../components/snippets/Header.astro";
+import Footer from "../components/snippets/Footer.astro";
+import FooterScripts from "@/components/FooterScripts.astro";
+import type { AceEntry } from "@sandboxsonny/ace-kit";
+import AcePreviewRefresh from "@sandboxsonny/ace-kit/astro/AcePreviewRefresh.astro";
+import AceSeo from "@sandboxsonny/ace-kit/astro/AceSeo.astro";
+
+type Props = {
+  /** The entry the page shows: its SEO title and description fill the page's search and sharing tags. */
+  entry?: AceEntry;
+  /** Used when there is no entry (a notice page), and when an entry has no title of its own. */
+  title: string;
+  description?: string;
+  /** True when the page is showing a draft inside the CMS's preview frame. */
+  preview?: boolean;
+};
+
+const { entry, title, description = "A simple example site for testing CMS Ace.", preview = false } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/icons/logo.svg" />
+    <Font cssVariable="--font-mulish" />
+    <AceSeo entry={entry} {title} {description} siteName="Adams Development" noindex={preview} />
+    <ClientRouter />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+    <FooterScripts />
+    <AcePreviewRefresh />
+  </body>
+</html>

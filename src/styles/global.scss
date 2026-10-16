@@ -1,0 +1,83 @@
+@use "variables";
+@use "mixins" as mixin;
+@use "sass:color";
+
+* {
+  box-sizing: border-box;
+  font-family: var(--font-mulish);
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+html {
+  font-size: 62.5%;
+  background-color: variables.$color-background;
+}
+
+body {
+  overflow-x: hidden;
+  font-size: 1.6rem;
+  line-height: 1.6;
+  color: variables.$color-text;
+}
+
+figure,
+blockquote {
+  margin: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+  font-weight: 400;
+}
+
+h1 {
+  font-size: 4.2rem;
+}
+
+h2 {
+  font-size: 3.6rem;
+}
+
+p {
+  font-size: 1.6rem;
+  font-weight: normal;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  cursor: pointer;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.button {
+  display: inline-block;
+  padding: 0.8rem 1.6rem;
+  font-size: 1.6rem;
+  color: variables.$color-text;
+  text-decoration: none;
+  background-color: variables.$color-primary;
+  border-radius: 0.8rem;
+
+  &:hover {
+    background-color: color.adjust(variables.$color-primary, $lightness: -5%);
+  }
+}

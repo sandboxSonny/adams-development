@@ -1,0 +1,71 @@
+---
+const { data } = Astro.props;
+const { text, author } = data;
+---
+
+<section aria-label="Testimonial" class="testimonial">
+  <div class="testimonial__wrapper">
+    <figure class="testimonial__figure">
+      <blockquote>
+        <p class="testimonial__quote">
+          <span class="testimonial__quote-mark testimonial__quote-mark--open"
+            >&ldquo;</span
+          >
+          {text}
+          <span class="testimonial__quote-mark testimonial__quote-mark--close"
+            >&rdquo;</span
+          >
+        </p>
+      </blockquote>
+      <figcaption class="testimonial__quote-source">
+        &mdash; {author}
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<style lang="scss">
+  @use '../styles/mixins.scss' as mixin;
+
+  .testimonial {
+    padding: 7rem 0;
+
+    &__wrapper {
+      @include mixin.page-width;
+    }
+
+    &__figure {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    &__quote {
+      font-size: 3.6rem;
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    &__quote-mark {
+      color: rgb(148 163 184);
+      user-select: none;
+    }
+
+    &__quote-mark--open {
+      margin-left: -0.875rem;
+    }
+
+    &__quote-source {
+      text-align: right;
+    }
+
+    @media (width >= 768px) {
+      &__quote-mark--open {
+        margin-left: -1.25rem;
+      }
+
+      &__quote {
+        font-size: 4.8rem;
+      }
+    }
+  }
+</style>

@@ -1,0 +1,55 @@
+---
+import type { SectionOf } from "@sandboxsonny/ace-kit";
+
+import type contact from "./Contact.schema";
+import { ContactForm } from "../react/ContactForm";
+
+type Props = {
+  section: SectionOf<typeof contact>;
+};
+
+const { section } = Astro.props;
+const { title, content, email, detail } = section.values;
+---
+
+<section aria-label={title} class="contact">
+  <div class="contact__wrapper">
+    <div class="contact__grid">
+      <ContactForm client:load />
+      <div class="contact__details">
+        <h2>{title}</h2>
+        <p>{content}</p>
+        <p>
+          Email: <a href={`email:${email}`}>{email}</a>
+        </p>
+        <p>{detail}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style lang="scss">
+  @use "../../styles/mixins.scss" as mixin;
+
+  .contact {
+    padding: 7rem 0;
+
+    &__wrapper {
+      @include mixin.page-width;
+    }
+
+    &__grid {
+      @include mixin.grid(1, flex-start, 4rem);
+    }
+
+    &__details {
+      @include mixin.flex(column, flex-start, flex-start, 1.4rem);
+    }
+
+    @media screen and (width >= 768px) {
+      &__grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  }
+</style>
