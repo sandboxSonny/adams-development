@@ -10,7 +10,7 @@ import react from "@astrojs/react";
 export default defineConfig({
   // The site's domain in CMS Ace. Ace Kit reads it from here (ACE_SITE_DOMAIN, if set, wins), so the dev server can find
   // or make your own private copy of this site to work on.
-  site: "https://ad.adamsdevelopment.co.uk",
+  site: "https://adamsdevelopment.co.uk",
   // Pages are rendered on each request so they always show the CMS's live content.
   output: "server",
   fonts: [
