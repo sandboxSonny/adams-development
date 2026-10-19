@@ -1,5 +1,6 @@
 ---
 import type { SectionOf } from "@sandboxsonny/ace-kit";
+import { getForm } from "@sandboxsonny/ace-kit/astro";
 
 import type contact from "./Contact.schema";
 import { ContactForm } from "../react/ContactForm";
@@ -10,12 +11,15 @@ type Props = {
 
 const { section } = Astro.props;
 const { title, content, email, detail } = section.values;
+
+// Set when the owners turned Cloudflare Turnstile on for the form in the CMS (Settings > Integrations).
+const form = await getForm("contact").catch(() => null);
 ---
 
 <section aria-label={title} class="contact">
   <div class="contact__wrapper">
     <div class="contact__grid">
-      <ContactForm client:load />
+      <ContactForm client:load turnstileSiteKey={form?.turnstile_site_key} />
       <div class="contact__details">
         <h2>{title}</h2>
         <p>{content}</p>
