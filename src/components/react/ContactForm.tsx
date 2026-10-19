@@ -56,7 +56,7 @@ export const ContactForm = () => {
         setStatus(responseData.message);
         reset();
       } else {
-        setStatus("Error sending message");
+        setStatus(responseData.error ?? "Error sending message");
       }
     } catch {
       setStatus("Error sending message");
