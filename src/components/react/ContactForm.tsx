@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import "./ContactForm.scss";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { AceTurnstile } from "@sandboxsonny/ace-kit/react";
 import { contactSchema, type ContactFormData } from "../../lib/schema/contact.validation";
 
 const fields: Array<{
@@ -26,8 +27,17 @@ const fields: Array<{
   },
 ];
 
-export const ContactForm = () => {
+type ContactFormProps = {
+  /** The Cloudflare Turnstile site key, when the owners turned it on in the CMS. Left out, there is no check. */
+  turnstileSiteKey?: string;
+};
+
+export const ContactForm = ({ turnstileSiteKey }: ContactFormProps) => {
   const [status, setStatus] = useState("");
+  const [token, setToken] = useState("");
+  const [sent, setSent] = useState(0);
+  // The spam trap: hidden from people, so only a bot fills it in.
+  const honeypot = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const {
     register,
@@ -39,6 +49,10 @@ export const ContactForm = () => {
   });
 
   const onSubmit = async (payload: unknown) => {
+    if (turnstileSiteKey && !token) {
+      setStatus("Please complete the check that you are a person.");
+      return;
+    }
     setLoading(true);
 
     try {
@@ -47,7 +61,11 @@ export const ContactForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          ...(payload as object),
+          honeypot: honeypot.current?.value ?? "",
+          turnstile_token: token,
+        }),
       });
 
       const responseData = await response.json();
@@ -62,6 +80,8 @@ export const ContactForm = () => {
       setStatus("Error sending message");
     } finally {
       setLoading(false);
+      // A Turnstile check works once, so a new one is asked for after every send.
+      setSent((count) => count + 1);
       reset();
     }
   };
@@ -105,6 +125,18 @@ export const ContactForm = () => {
                 </>
               );
             })}
+
+            <input
+              ref={honeypot}
+              type="text"
+              name="honeypot"
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", opacity: 0 }}
+            />
+
+            <AceTurnstile siteKey={turnstileSiteKey} onToken={setToken} resetKey={sent} />
 
             <div className="contact-form__actions">
               <button disabled={loading} type="submit" className="contact-form__submit">
