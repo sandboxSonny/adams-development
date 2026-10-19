@@ -8,24 +8,18 @@ const { text, author } = data;
     <figure class="testimonial__figure">
       <blockquote>
         <p class="testimonial__quote">
-          <span class="testimonial__quote-mark testimonial__quote-mark--open"
-            >&ldquo;</span
-          >
+          <span class="testimonial__quote-mark testimonial__quote-mark--open">&ldquo;</span>
           {text}
-          <span class="testimonial__quote-mark testimonial__quote-mark--close"
-            >&rdquo;</span
-          >
+          <span class="testimonial__quote-mark testimonial__quote-mark--close">&rdquo;</span>
         </p>
       </blockquote>
-      <figcaption class="testimonial__quote-source">
-        &mdash; {author}
-      </figcaption>
+      <figcaption class="testimonial__quote-source">&mdash; {author}</figcaption>
     </figure>
   </div>
 </section>
 
 <style lang="scss">
-  @use '../styles/mixins.scss' as mixin;
+  @use "../styles/mixins.scss" as mixin;
 
   .testimonial {
     padding: 7rem 0;
