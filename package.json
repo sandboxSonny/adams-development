@@ -22,7 +22,7 @@
   "dependencies": {
     "@astrojs/node": "^11.1.7",
     "@astrojs/react": "^7.1.0",
-    "@hookform/resolvers": "^5.9.1",
+    "@hookform/resolvers": "^6.0.0",
     "@sandboxsonny/ace-kit": "^0.14.1",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
