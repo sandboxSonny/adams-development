@@ -20,33 +20,33 @@
     "generate": "ace-kit generate"
   },
   "dependencies": {
-    "@astrojs/node": "^11.1.9",
-    "@astrojs/react": "^7.1.2",
-    "@hookform/resolvers": "^7.0.5",
+    "@astrojs/node": "^11.1.14",
+    "@astrojs/react": "^7.1.9",
+    "@hookform/resolvers": "^7.0.8",
     "@sandboxsonny/ace-kit": "^0.17.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "astro": "^7.4.5",
+    "astro": "^7.4.13",
     "astro-seo": "^1.2.0",
-    "motion": "^14.9.0",
+    "motion": "^14.14.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
-    "react-hook-form": "^7.91.0",
-    "sass": "^1.107.1",
+    "react-hook-form": "^7.92.0",
+    "sass": "^1.108.2",
     "zod": "^4.6.7"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.12",
     "@eslint/js": "^10.0.1",
-    "eslint": "^10.14.0",
+    "eslint": "^10.15.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^3.2.1",
     "globals": "^17.14.0",
-    "jsdom": "^31.0.0",
-    "prettier": "^3.9.10",
+    "jsdom": "^31.0.1",
+    "prettier": "^3.10.1",
     "prettier-plugin-astro": "^1.1.2",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.72.1",
-    "vitest": "^5.1.0"
+    "typescript-eslint": "^8.74.0",
+    "vitest": "^5.1.1"
   }
 }
